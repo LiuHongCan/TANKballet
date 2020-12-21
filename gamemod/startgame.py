@@ -61,19 +61,24 @@ class MainGame():
             MainGame.window.blit(self.controller.gettextsurface("剩余敌方坦克%d辆"%len(self.ENEMYTANK_LIST)),(5,5))
             # 调用展示墙壁的方法
             self.levelinit.blitwalls(MainGame.window)
+            # 将坦克的值传递给TANK_P1
+            self.TANK_P1 = DataList.TANK_P1
             if self.TANK_P1 and self.TANK_P1.live:
                 # 将我方坦克加入窗口
                 self.TANK_P1.dispalytank()
+                self.TANK_P1.hitwalls()
+                self.TANK_P1.collisionenemytank()
             else:
                 del DataList.TANK_P1
                 DataList.TANK_P1 = None
                 self.TANK_P1 = DataList.TANK_P1
             # 循环展示敌方坦克
-            # self.levelinit.blitenemytank()
+            self.levelinit.blitenemytank()
             self.ENEMYTANK_LIST = DataList.ENEMYTANK_LIST
             # 根据坦克的开关状态调用坦克的移动方法
             if self.TANK_P1 and not self.TANK_P1.stop:
                 self.TANK_P1.tankmove()
+
             # 调用渲染子弹列表的方法
             self.levelinit.blitbullet()
             # 调用渲染敌方子弹的方法

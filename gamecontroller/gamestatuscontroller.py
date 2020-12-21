@@ -1,7 +1,7 @@
 import pygame
 import sys
-
 from common.bullet import Bullet
+from common.playertank import PlayerTank
 from config.colorset import ColorSeting
 from data.datalist import DataList
 from gamelevels.levelsinit import LevelInit
@@ -11,6 +11,7 @@ class StatusController:
     def __init__(self):
         self.levelinit = LevelInit()
 
+
     def getevent(self):
         eventlist = pygame.event.get()
         for event in eventlist:
@@ -19,7 +20,9 @@ class StatusController:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE and not DataList.TANK_P1:
+                    DataList.TANK_P1 = PlayerTank(400, 300)
                     self.levelinit.createplayertank()
+                    DataList.TANK_P1.dispalytank()
                 if DataList.TANK_P1 and DataList.TANK_P1.live:
                     if event.key == pygame.K_LEFT:
                         print("坦克向左移动")

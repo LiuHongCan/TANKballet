@@ -3,6 +3,7 @@ import pygame
 from common.bullet import Bullet
 from common.getfilemethod import GetFile
 from common.tankbase import TankBase
+from data.datalist import DataList
 
 
 class EnemyTank(TankBase):
@@ -17,7 +18,7 @@ class EnemyTank(TankBase):
             "RIGHT": pygame.image.load(self.getimage.getimagefile('enemy1R.gif'))
         }
         self.direction = self.randdirection()
-        self.images = self.images[self.direction]
+        self.image = self.images[self.direction]
         # 坦克所在区域/坦克图片的大小
         self.rect = self.image.get_rect()
         # 指定坦克初始位置坐标
@@ -39,9 +40,11 @@ class EnemyTank(TankBase):
     def randmove(self):
         if self.step <= 0:
             self.direction = self.randdirection()
+            # self.image = self.images[self.direction]
             self.step = 50
         else:
             self.tankmove()
+            # self.image = self.images[self.direction]
             self.step -= 1
     # 敌方坦克射击方法
     def shot(self):
@@ -54,8 +57,21 @@ class EnemyTank(TankBase):
             if pygame.sprite.collide_rect(self, playertank):
                 # 敌方坦克停止
                 self.stay()
+    def collisionothertank(self, enemytanklist):
+
+        for othertank in enemytanklist:
+            if othertank != self:
+                if pygame.sprite.collide_rect(self, othertank):
+                    self.stay()
+
+
+    def dispalytank(self):
+        self.image = self.images[self.direction]
+
+        DataList.window.blit(self.image, self.rect)
 
 
 if __name__ == '__main__':
     print(EnemyTank(80, 80, 80).randdirection())
+    print(type(EnemyTank(0,0,10).images))
     pass
